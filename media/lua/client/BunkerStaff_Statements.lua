@@ -1,7 +1,7 @@
 
-require "BunkerStaff_Functions"
-
 BunkerStaff = BunkerStaff or {}
+
+BunkerStaff.IgnorePlayer = nil
 
 function BunkerStaff.getMsg(strList)
     local phrases = {}
@@ -12,14 +12,14 @@ function BunkerStaff.getMsg(strList)
 	return msg
 end
 
-
 function BunkerStaff.sayMsg(zed, mode, msg)
     if not zed then return end
-    if zed:getModData()['IgnorePlayer'] ~= nil then return end
+
+    if BunkerStaff.IgnorePlayer then return end
 
     local strList = SandboxVars.BunkerStaff.RandomStatements
     if mode == "hurt" then
-        if zed:getModData()['WasHurt'] ~= nil then return end 
+        if BunkerStaff.WasHurt  then return end 
         strList = SandboxVars.BunkerStaff.HurtStatements
     elseif mode == "interact" then
         strList = SandboxVars.BunkerStaff.InteractStatements
@@ -32,13 +32,12 @@ function BunkerStaff.sayMsg(zed, mode, msg)
     if not msg then return end
 
     zed:addLineChatElement(tostring(msg))
-    zed:getModData()['IgnorePlayer'] = true
+    BunkerStaff.IgnorePlayer= true
 
     BunkerStaff.pause(3, function()
-        zed:getModData()['IgnorePlayer'] = nil
+        BunkerStaff.IgnorePlayer = nil
     end)
 end
-
 -----------------------            ---------------------------
 function BunkerStaff.pause(seconds, callback)
     local start = getTimestampMs()

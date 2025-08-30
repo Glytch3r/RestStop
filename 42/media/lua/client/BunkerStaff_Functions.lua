@@ -18,7 +18,6 @@ https://ko-fi.com/glytch3r
 Discord: Glytch3r#1337 / glytch3r
 ----------------------------------------------------------------------------------------------------------------------------
 --]]
-require "lua_timers"
 BunkerStaff = BunkerStaff or {}
 
 BunkerStaff.range = 12
@@ -230,7 +229,6 @@ function BunkerStaff.areNoZeds(point)
 	local zeds = BunkerStaff.getZeds(point)
 	return #zeds == 0
 end
-
 function BunkerStaff.isSafe(zed)
     local chillDistance = BunkerStaff.AlertRange + 1
     local targ = BunkerStaff.getTarget(zed)
@@ -255,78 +253,3 @@ function BunkerStaff.hasNpc(sq)
 end
 
 -----------------------      end*         ---------------------------
-
-
------------------------- marker*  mark*    distance* range*    ---------------------------
---[[
-local function getTargDist(zed, targ, range)
-	if not (zed or targ) then return false end
-	local dist = math.floor(IsoUtils.DistanceTo(zed:getX(), zed:getY(), targ:getX() , targ:getY()))
-	if dist <= range then
-		return true
-	end
-	return false
-end
-local r,g,b=0.6,1,10
-local r2,g2,b2=1,0.5,0.5
-function BunkerStaff.addzedmarks(zed, pl)
-	if not (pl or zed) then return end
-	local marker = nil
---	if zed:getModData()['isNPCMarked'] == nil then zed:getModData()['isNPCMarked'] = false end
-	--if not zed:getModData()['isNPCMarked'] == true then
-		local targ =  zed:getTarget()
-		if targ == pl then
-			marker = getWorldMarkers():addPlayerHomingPoint(pl, zed:getX(), zed:getY(), r2, g2, b2, 5);
-		else
-			marker = getWorldMarkers():addPlayerHomingPoint(pl, zed:getX(), zed:getY(), r, g, b, 5);
-		end
-	--	zed:getModData()['isNPCMarked'] = true
-	--end
-	timer:Simple(3, function()
-		if marker then marker:remove() end
-		if zed then zed:getModData()['isNPCMarked'] = nil end
-	end)
-end
-function BunkerStaff.addNPCMarker(zed)
-	if not zed then return end
-	BunkerStaff.ticks = BunkerStaff.ticks +1
-	local pl = getPlayer()
-	if not pl then return end
-	if BunkerStaff.ticks % 300 == 0 then
-		if getTargDist(zed, pl, BunkerStaff.markerDist) then
-			BunkerStaff.addzedmarks(zed, pl)
-		end
-		BunkerStaff.ticks = 0
-	end
-end
-]]
-
---[[
------------------------     act*          ---------------------------
-function BunkerStaff.getAct(zed, targ)
-
-	local distance =  BunkerStaff.getDist(zed, targ)
-
-    zed:setVariable('NPC_Action', 'idle')
-    zed:setVariable('NPC_Action', 'aim')
-    zed:setVariable('NPC_Action', 'attack')
-    zed:setVariable('NPC_Action', 'reload')
-    zed:setVariable('NPC_Action', 'move')
-
-
-
-	if distance <= BunkerStaff.AttackRange then
-		zed:setVariable('ActNPC', 'isZedAttack')
-		zed:setVariable('NPC_Action', 'attack')
-	elseif distance <= BunkerStaff.AlertRange then
-		zed:setVariable('ActNPC', 'isReady')
-		zed:setVariable('NPC_Action', 'aim')
-		zed:setVariable('NPC_Action', 'move')
-	elseif  distance <= BunkerStaff.range then
-		zed:setVariable('ActNPC', 'NPC_Chill')
-	end
-
-end
-]]
-
-

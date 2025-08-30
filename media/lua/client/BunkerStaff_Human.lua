@@ -1,3 +1,25 @@
+
+--[[◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙
+██░_____░███░_░███░_░███░_░█░_______░██░_____░██░_░████░_░██░_____░██░______░██ 
+█░_░███░_░██░_░███░_░███░_░████░_░████░_░███░_░█░_░████░_░█░_████░_░█░_█████░_█
+█░_░████████░_░███░_░███░_░████░_░████░_░███████░_░████░_░███████░_░█░_█████░_█
+█░_░█░___░██░_░████░_____░█████░_░████░_░███████░________░████░__░███░______░██
+█░_░███░_░██░_░██████░_░███████░_░████░_░███████░_░████░_░███████░_░█░_░████_░█
+█░_░███░_░██░_░██████░_░███████░_░████░_░███░_░█░_░████░_░█░_████░_░█░_░████__█
+██░_____░███░____░███░_░███████░_░█████░_____░██░_░████░_░██░_____░██░_░████__█
+◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙◙--]]
+
+--[[ ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+░░▓█████▓░░░▓████▓░░░▓█▓░░░░░░░▓█▓░░░░░▓█████▓░░▓█▓░░░░▓█▓░░▓█████▓░░▓█▓░░░░██░
+░▓█▓░░░▓█▓░░▓█▓░░░░░░▓█▓░░░░░░░▓█▓░░░░▓█▓░░░▓█▓░▓█▓░░░░▓█▓░▓█░░░░▓█▓░▓█▓░░░░██░
+░▓█▓░░░▓█▓░░▓█▓░░░░░░▓█▓░░░░░░░▓█▓░░░░▓█▓░░░░░░░▓█▓░░░░▓█▓░░░░░░░▓█▓░▓█▓░░░░█▓░
+░▓█▓░▓███▓░░▓█▓░░░░▓█████▓░░░░░▓█▓░░░░▓█▓░░░░░░░▓████████▓░░░░▓██▓░░░▓██████▓░░
+░▓█▓░░░░░░░░▓█▓░░░▓█▓░░░▓█▓░░░░▓█▓░░░░▓█▓░░░░░░░▓█▓░░░░▓█▓░░░░░░░▓█▓░▓█░░░░░▓█░
+░▓█▓░░░▓█▓░░▓█▓░░░▓█▓░░░▓█▓░░░░▓█▓░░░░▓█▓░░░▓█▓░▓█▓░░░░▓█▓░▓█░░░░▓█▓░▓█░░░░░▓█░
+░░▓█████▓░░░▓█▓░░░▓█▓░░░▓█▓░▓███████▓░░▓█████▓░░▓█▓░░░░▓█▓░░▓█████▓░░▓██████▓░░
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ --]]
+
+
 BunkerStaff = BunkerStaff or {}
 
 BunkerStaff.SkinList_F = {
@@ -113,58 +135,16 @@ function BunkerStaff.Humanize(zed)
 
 end
 
-function BunkerStaff.cleanUp(zed)
-    if zed and instanceof(zed, "IsoZombie") then
-        local vis = zed:getHumanVisual()
-        local iVis = zed:getItemVisuals()
-        local bVis = vis:getBodyVisuals()
-       -- zed:clearAttachedItems()
-        --local attachedItems = zed:getAttachedItems()
-        vis:randomDirt()
-        vis:removeBlood()
+function BunkerStaff.spawnZed()
+    local zed = nil
+    if not BunkerStaff.zed then
+        local immortal = SandboxVars.BunkerStaff.immortal or true
+        local x, y, z = BunkerStaff.parseCoords()
+        zed = addZombiesInOutfit(x, y, z, 1, "BunkerStaff", 100, false, false, false, false, immortal, false, 2, false);
 
-        for i=1, BloodBodyPartType.MAX:index() do
-            local part = BloodBodyPartType.FromIndex(i-1)
-            vis:setBlood(part, 0)
-            vis:setDirt(part, 0)
-        end
-
-        for i = 0, iVis:size() - 1 do
-            local item = iVis:get(i)
-            if item then
-                for j = 0, BloodBodyPartType.MAX:index() - 1 do
-                    local part = BloodBodyPartType.FromIndex(j)
-                    if item:getHole(part) ~= 0 then
-                        item:removeHole(j)
-                    end
-                    item:setBlood(part, 0)
-                    item:setDirt(part, 0)
-                end
-                if item:getInventoryItem() then
-                    item:setInventoryItem(nil)
-                end
-            end
-        end
-
-        for j = bVis:size() - 1, 0, -1 do
-            local item = bVis:get(j)
-            if item then
-                local fType = item:getItemType()
-                if luautils.stringStarts(fType, "Base.ZedDmg_") or luautils.stringStarts(fType, "Base.Wound_") or luautils.stringStarts(fType, "Base.Bandage_") then
-                    vis:removeBodyVisualFromItemType(fType)
-                end
-            end
-        end
-        zed:resetModelNextFrame()
-        zed:resetModel()
     end
+    return zed
 end
-BunkerStaff.cleanUp(BunkerStaff.zed)
-
-
-
-
-
 
 
 --[[ 

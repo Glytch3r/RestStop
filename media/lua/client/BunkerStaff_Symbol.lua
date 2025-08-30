@@ -5,10 +5,10 @@ function BunkerStaff.addMapSymbol()
     if not SandboxVars.BunkerStaff.AddMapSymbol  then return end
     local pl = getPlayer()
     if not pl then return end 
-
-    if pl:getModData()['BunkerStaffTag'] == nil then
+    
+    if BunkerStaff.BunkerStaffTag == nil then
         local x, y, z =  BunkerStaff.parseCoords() 
-        pl:getModData()['BunkerStaffTag'] = true
+        BunkerStaff.BunkerStaffTag = true
         if not x or not y then return end   
 
         if not ISWorldMap_instance then
@@ -29,6 +29,3 @@ function BunkerStaff.addMapSymbol()
     end
 end
 
---[[ 
-    BunkerStaff.addMapSymbol()
-]]

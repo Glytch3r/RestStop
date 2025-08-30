@@ -3,13 +3,11 @@ BunkerStaff = BunkerStaff or {}
 BunkerStaff.inBunker = false
 BunkerStaff.inBunkerRm = false
 BunkerStaff.zed = nil
-
+BunkerStaff.isRestStop = false
 -----            ---------------------------
 LuaEventManager.AddEvent("OnBunkerEnter")
 LuaEventManager.AddEvent("OnBunkerExit")
-
 -----------------------       parse*     ---------------------------
-
 function BunkerStaff.parseCoords()
     if BunkerStaff.coords then
         return BunkerStaff.coords[1], BunkerStaff.coords[2], BunkerStaff.coords[3]
@@ -23,119 +21,78 @@ function BunkerStaff.parseCoords()
 
     return tx, ty, tz
 end
+function BunkerStaff.parseColor()
+    if BunkerStaff.RoomLight then
+        return BunkerStaff.RoomLight[1], BunkerStaff.RoomLight[2], BunkerStaff.RoomLight[3], BunkerStaff.RoomLight[4] 
+    end
+
+    local strList = SandboxVars.BunkerStaff.RoomLight or "255;255;255;255"
+    local r, g, b, a = strList:match("^(%d+);(%d+);(%d+);(%d+)$")
+    r, g, b, a = tonumber(r), tonumber(g), tonumber(b), tonumber(a)
+
+    BunkerStaff.RoomLight = { r, g, b, a }
+    return r, g, b, a
+end
 
 -----------------------     trigger*       ---------------------------
 function BunkerStaff.trigger()
     local pl = getPlayer()
     if not pl then return end
-
-    local csq = pl:getCurrentSquare()
-    if not csq then return end
-
-    local rm = csq:getRoom()
-    if not rm then
-        if BunkerStaff.inBunkerRm then
-            triggerEvent("OnBunkerExit", pl, rm)
-            BunkerStaff.inBunkerRm = false
-        end
-        return
-    end
-
-    local isBunker = (rm == BunkerStaff.getBunkerRm())
-
-    if isBunker and not BunkerStaff.inBunkerRm then
-        triggerEvent("OnBunkerEnter", pl, rm)
-        BunkerStaff.inBunkerRm = true
-    elseif not isBunker and BunkerStaff.inBunkerRm then
-        triggerEvent("OnBunkerExit", pl, rm)
-        BunkerStaff.inBunkerRm = false
-    end
-end
-
-Events.OnPlayerMove.Remove(BunkerStaff.trigger)
-Events.OnPlayerMove.Add(BunkerStaff.trigger)
-
-
------------------------  events*          ---------------------------
---spawn*
---spawn*
-function BunkerStaff.doSpawn(pl, rm)
-    if not rm then return end
-
-    -- find existing zed in room
-    local existing = BunkerStaff.getBunkerStaff(rm)
-
-    if existing then
-        BunkerStaff.zed = existing
-    else
-        -- spawn fresh
-        BunkerStaff.zed = BunkerStaff.spawnZed()
-    end
-
-    -- if we now have a zed, process it
-    if BunkerStaff.zed then
-        BunkerStaff.Humanize(BunkerStaff.zed)
-        BunkerStaff.addNPCTag()
-        BunkerStaff.addMapSymbol()
-        if BunkerStaff.marker == nil then
+    local isBunker = BunkerStaff.isInBunkerRm()
+    if BunkerStaff.isInBunkerBldg() then
+        if not BunkerStaff.marker then
             BunkerStaff.setLocMarker(true)
         end
-        BunkerStaff.sayMsg(BunkerStaff.zed)
-        if getCore():getDebug() then
-            print("BunkerStaff active in " .. tostring(rm))
+        if not isBunker and BunkerStaff.isRestStop then
+            triggerEvent("OnBunkerExit", pl)
+        elseif isBunker then 
+            triggerEvent("OnBunkerEnter", pl)
+            BunkerStaff.isRestStop = true
         end
     end
 end
+Events.OnPlayerMove.Remove(BunkerStaff.trigger)
+Events.OnPlayerMove.Add(BunkerStaff.trigger)
+-----------------------  events*          ---------------------------
+--spawn
+function BunkerStaff.doSpawn()
+    if not BunkerStaff.zed then
+        BunkerStaff.spawnZed()
+    end
+    Events.OnBunkerEnter.Remove(BunkerStaff.doSpawn)
+end
+Events.OnBunkerEnter.Add(BunkerStaff.doSpawn)
+
+
+
+function BunkerStaff.greet()
+    if BunkerStaff.zed then 
+        BunkerStaff.sayMsg(BunkerStaff.zed)
+    end 
+    if not BunkerStaff.light then
+        local x, y, z = BunkerStaff.parseCoords()
+        local r, g, b, a = BunkerStaff.parseColor()
+        if a <= 0 then return end
+        BunkerStaff.light = getCell():addLamppost(IsoLightSource.new(x, y, z, math.min(255, r), math.min(255, g), math.min(255, b), math.min(255, a)))
+    end
+end
+Events.OnBunkerEnter.Add(BunkerStaff.greet)
+
+
 
 --despawn*
-function BunkerStaff.doDespawn(pl, rm)
-    if BunkerStaff.marker then
-        BunkerStaff.setLocMarker(false)
+function BunkerStaff.doDespawn(pl)
+    if BunkerStaff.light then
+        getCell():removeLamppost(BunkerStaff.light)
     end
-
-    if BunkerStaff.zed then
-        if BunkerStaff.tag then
-            BunkerStaff.delTagObj(BunkerStaff.tag)
-        end
+--[[     if BunkerStaff.zed then
         BunkerStaff.zed:removeFromWorld()
         BunkerStaff.zed:removeFromSquare()
         BunkerStaff.zed = nil
-        if getCore():getDebug() then
-            print("BunkerStaff despawned from " .. tostring(rm))
-        end
-    end
+    end ]]
 end
-
-Events.OnBunkerEnter.Add(BunkerStaff.doSpawn)
 Events.OnBunkerExit.Add(BunkerStaff.doDespawn)
 
-
------------------------     getzed*       ---------------------------
-
-function BunkerStaff.getBunkerStaff(room)
-    if BunkerStaff.inBunker then
-        local sq = getPlayer():getSquare() 
-        room = room or BunkerStaff.getRoom(sq)
-        if not room then return nil end
-        for x = room:getX(), room:getX2() do
-            for y = room:getY(), room:getY2() do
-                local sq = getCell():getGridSquare(x, y, room:getZ())
-                if sq and sq:getRoom() == room then
-                    local zeds = sq:getZombie()
-                    if zeds then
-                        for i = 0, zeds:size() - 1 do
-                            local zed = zeds:get(i)
-                            if zed and zed:getOutfitName() == "BunkerStaff" then
-                                return zed
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-    return nil
-end
 -----------------------    is*        ---------------------------
 
 function BunkerStaff.isInBunkerBldg()    
@@ -182,20 +139,6 @@ function BunkerStaff.getBunkerRm()
     end
     return nil
 end
-
------------------------            ---------------------------
-
-
-function BunkerStaff.getRoom(sq)
-    sq = sq or getPlayer():getCurrentSquare()
-    return sq:getRoom() or nil
-end
-
-function BunkerStaff.getBldg(sq)
-    sq = sq or getPlayer():getCurrentSquare()
-    return sq:getBuilding() or nil
-end
-
 -----------------------            ---------------------------
 
 function BunkerStaff.getRoomSquares(room)
@@ -218,8 +161,40 @@ end
 
 
 
+function BunkerStaff.getRoom(sq)
+    sq = sq or getPlayer():getCurrentSquare()
+    return sq:getRoom() or nil
+end
+
+function BunkerStaff.getBldg(sq)
+    sq = sq or getPlayer():getCurrentSquare()
+    return sq:getBuilding() or nil
+end
 
 
+
+
+--[[ 
+function BunkerStaff.getBunkerBldg()
+    local x, y, z = BunkerStaff.parseCoords()
+    if not x or not y or not z then return nil end
+    local sq = getCell():getOrCreateGridSquare(x, y, z)
+    if sq then
+        return sq:getBuilding()
+    end
+    return nil
+end
+
+
+function BunkerStaff.getBunkerRm()
+    local x, y, z = BunkerStaff.parseCoords()
+    if not x or not y or not z then return nil end
+    local sq = getCell():getOrCreateGridSquare(x, y, z)
+    if sq then
+        return sq:getRoom()
+    end
+    return nil
+end ]]
 
 
 

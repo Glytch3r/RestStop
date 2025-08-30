@@ -19,6 +19,9 @@ Sandbox_EN = {
 	Sandbox_BunkerStaff_Coord = "NPC Spawn Coordinates",
 	Sandbox_BunkerStaff_Coord_tooltip = "Format: X;Y;Z",
 
+	Sandbox_BunkerStaff_RoomLight = "Room Light",
+	Sandbox_BunkerStaff_RoomLight_tooltip = "Format: R;G;B;Opacity. setting Opacity to 0 disables this feature. Maxvalues 255;255;255;255",
+
 	Sandbox_BunkerStaff_HurtStatements = "NPC Hurt Statements",
 	Sandbox_BunkerStaff_HurtStatements_tooltip = "Random phrases when NPC is hurt.",
 

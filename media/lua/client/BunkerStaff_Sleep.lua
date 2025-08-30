@@ -87,6 +87,10 @@ function BunkerStaff.forceInstantSleep(pl, hours)
 
 end
 
+
+
+
+
 function BunkerStaff.doSleep()
     local pl = getPlayer() 
     BunkerStaff.forceInstantSleep(pl, hours)
@@ -102,8 +106,8 @@ function BunkerStaff.doStats(pl)
     if not pl then return end
     local stats = pl:getStats()
     local drunkAmt = SandboxVars.BunkerStaff.drunkAmt or 100 
-    stats:setDrunkenness(math.min(200, stats:getDrunkenness()+drunkAmt))
-    BunkerStaff.pause(0.5, function() 
+    stats:setDrunkenness(math.min(200, stats:getDrunkenness() + drunkAmt))
+    BunkerStaff.pause(1, function() 
         stats:setThirst(0.3)
         stats:setHunger(0.05)
         stats:setBoredom(0.0)

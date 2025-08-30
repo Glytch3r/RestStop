@@ -6,7 +6,6 @@ function BunkerStaff.updateOpt()
     sOpt:toLua()
     sOpt:sendToServer()
 end
-
 function BunkerStaff.setLocMarker(bool)    
     if bool then
         BunkerStaff.updateOpt()

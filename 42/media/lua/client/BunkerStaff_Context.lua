@@ -25,8 +25,10 @@ Discord: Glytch3r#1337 / glytch3r
 
 -----------------------               ---------------------------
 
-require "BunkerStaff_Functions"
 BunkerStaff = BunkerStaff or {}
+BunkerStaff.WasHurt = false
+BunkerStaff.IgnorePlayer = false
+
 
 local acts = {
 	'Disassemble',
@@ -36,8 +38,58 @@ local acts = {
 	'Forage',
 	'Looting'
 }
-
 -----------------------     context*          ---------------------------
+function BunkerStaff.doTrade()
+    pl = pl or getPlayer()
+    if not pl or not pl:isAlive() then return false end
+
+    local inv = pl:getInventory()
+    local card = "Base.RationCard"
+    local cost = SandboxVars.BunkerStaff.tradeCost or 50
+
+    local cardCount = inv:getItemCount(card)
+    if cardCount < cost then return false end
+
+    for i = 1, cost do
+        local item = inv:FindAndReturn(card)
+        if item then
+            inv:Remove(item)
+        end
+    end
+
+    return true
+end
+--[[ 
+
+ BunkerStaff.doTrade()
+    local removed = 0
+    for j = inv:getItems():size()-1, 0, -1 do
+        local item = inv:getItems():get(j)
+        if item and item:getFullType() == "Base.RationCard" then
+            inv:Remove(item)
+            removed = removed + 1
+            if removed == cost then
+                break
+            end
+        end
+    end ]]
+
+
+
+
+
+
+
+
+
+function BunkerStaff.isCanTrade(pl)
+	pl = pl or getPlayer()
+	if not pl or not pl:isAlive() then return false end
+	local cost = SandboxVars.BunkerStaff.tradeCost or 50
+	local inv = pl:getInventory() 	
+	local cardCount = inv:getItemCount("Base.RationCard")
+	return cardCount  >= cost
+end
 
 function BunkerStaff.Context(player, context, worldobjects)
 	local pl = getSpecificPlayer(player)
@@ -48,12 +100,12 @@ function BunkerStaff.Context(player, context, worldobjects)
 	if not sq then return end
 	local zed = sq:getZombie()
 	if not zed then return end
-
+	
 	if BunkerStaff.isNPCZed(zed) then
 		local Main = context:addOptionOnTop("NPC:")
 		local interact = ISContextMenu:getNew(context)
 		context:addSubMenu(Main, interact)
-		Main.iconTexture = getTexture("media/ui/NPC_Green.png")
+		Main.iconTexture = getTexture("media/ui/NPC_Blue.png")
 		
 		local tip = ISWorldObjectContextMenu.addToolTip()
 		local tip2 = ISWorldObjectContextMenu.addToolTip()
@@ -61,32 +113,36 @@ function BunkerStaff.Context(player, context, worldobjects)
 		local optClick = interact:addOption("Interact", worldobjects, function()
 			BunkerStaff.sayMsg(zed, "interact")
 		end)
-		optClick.iconTexture = getTexture("media/ui/NPC_Blue.png")		
+		optClick.iconTexture = getTexture("media/ui/NPC_Orange.png")		
 		tip.description = "Interact"
 		-----------------------            ---------------------------
 		local optClick2 = interact:addOption("Trade", worldobjects, function()
-			BunkerStaff.doTrade(zed) 
+			if BunkerStaff.doTrade() then 
+				BunkerStaff.pause(1.5, function()
+					BunkerStaff.doSleep()			
+				end)
+			end
 			BunkerStaff.sayMsg(zed) 
 		end)
-		optClick2.iconTexture = getTexture("media/ui/NPC_Blue.png")
-		local inv = pl:getInventory() 	
-		local cardCount = inv:getItemCount("Base.RationCard")
-		local hasRationCards = cardCount  >= 50
+		optClick2.iconTexture = getTexture("media/ui/NPC_Green.png")
+		
 		tip2.description = "Trade"
 		local tipMsg = "Bunker Staff NPC"
-		if zed:getModData()['WasHurt'] ~= nil then
+		BunkerStaff.WasHurt =  BunkerStaff.WasHurt or false
+
+		if BunkerStaff.WasHurt then
 			tipMsg =  "Bunker Staff is Hurt"
-		elseif zed:getModData()['IgnorePlayer'] ~= nil then
-			tipMsg = "Bunker Staff is Busy"
 		end
-		if zed:getModData()['IgnorePlayer'] ~= nil or  zed:getModData()['WasHurt'] ~= nil then
+		if  BunkerStaff.WasHurt then
 			optClick.notAvailable = true
 			optClick2.notAvailable = true
 		end
 		tip.description = tostring(tipMsg)
 		optClick.toolTip = tip
-		if not hasRationCards then
+		if not BunkerStaff.isCanTrade(pl) then
 			optClick2.notAvailable = true
+			optClick2.iconTexture = getTexture("media/ui/NPC_Red.png")
+
 			tipMsg =  "Not enough Ration Cards: ".. tostring(cardCount).." / 50"
 		end
 		tip2.description = tostring(tipMsg)
@@ -109,3 +165,29 @@ Events.OnFillWorldObjectContextMenu.Add(BunkerStaff.Context)
 		---------------------------
 
 
+--[[ 
+function BunkerStaff.doTrade()
+	local removed = 0
+	pl = pl or getPlayer()
+	if not pl or not pl:isAlive() then return end
+	local inv = pl:getInventory() 
+
+	local cardCount = inv:getItemCount("Base.RationCard")
+	local hasRationCards = cardCount  >= 50
+	if hasRationCards then
+		local inv = pl:getInventory()
+		for j = inv:getItems():size()-1, 0, -1 do
+			local item = inv:get(j)
+			if item and item:getFullType() == "Base.Ration" then
+				inv:Remove(item)
+				removed = removed + 1
+				if removed >= 50 then
+					return true
+				end
+			end
+		end
+	end
+    return false	
+end
+
+ ]]
