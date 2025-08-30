@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fileGuidTable>
+	<files>
+		<path>media/clothing/clothingItems/BellyButton_RingSilver.xml</path>
+		<guid>94dc4673-2c6f-47ba-8750-0749c5452eab</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/Underwear_FrillyBra_Straps_Black.xml</path>
+		<guid>6ded33a8-7e75-4755-8afb-28b3dbf25e0c</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/Gloves_LongWomenGloves.xml</path>
+		<guid>9c36a162-1348-46ad-81bd-70bf3ed7a93e</guid>
+	</files>
+
+	<files>
+		<path>media/clothing/clothingItems/Holster_AnkleRight.xml</path>
+		<guid>910277bd-1de8-4ce7-9f0a-7920fed87535</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/Holster_AnkleLeft.xml</path>
+		<guid>d1557446-883e-4233-a27c-ebd148f7a409</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/Shoes_Fancy.xml</path>
+		<guid>b87c05cc-9a93-4572-99f8-005e350ee723</guid>
+	</files>	
+    <files>
+		<path>media/clothing/clothingItems/StockingsBlack.xml</path>
+		<guid>00ae3ec3-4b6b-484c-9edd-501339307b45</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/Underwear_FrillyUnderpants_Black.xml</path>
+		<guid>eacdff18-efb3-4eaf-b71d-f2f6d98bff65</guid>
+	</files>
+    <files>
+		<path>media/clothing/clothingItems/MakeUp_LipsBlack.xml</path>
+		<guid>93dae095-1c92-4068-8f81-f75f62e153d9</guid>
+	</files>
+	<files>
+		<path>media/clothing/clothingItems/MakeUp_EyesShadowBlue.xml</path>
+		<guid>38954977-5d34-44d2-97bf-d0018bda7997</guid>
+	</files>
+</fileGuidTable>

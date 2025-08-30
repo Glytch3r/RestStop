@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+	<m_Name>NPC_IdleStart</m_Name>
+	<m_AnimName>NPC_Idle</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SpeedScale>0.23</m_SpeedScale>
+	<m_BlendTime>0.25</m_BlendTime>
+<!--
+	<m_SpeedScaleRandomMultiplierMin>0.2</m_SpeedScaleRandomMultiplierMin>
+	<m_SpeedScaleRandomMultiplierMax>1.25</m_SpeedScaleRandomMultiplierMax>
+	<m_randomAdvanceFraction>0.50</m_randomAdvanceFraction>
+	-->
+	<m_Conditions>
+		<m_Name>isNPC</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Events>
+	<m_EventName>SetVariable</m_EventName>
+		<m_Time>End</m_Time>
+		<m_ParameterValue>isNPC=true</m_ParameterValue>
+	</m_Events>
+</animNode>

@@ -1,0 +1,26 @@
+module Base
+{
+	model RationCard
+	{
+		mesh = WorldItems/MagazineOpen,
+		texture = WorldItems/RationCard,
+		scale = 0.1,
+
+		attachment world
+		{
+			offset = 0.0000 0.0000 -0.6050,
+			rotate = 0.0000 0.0000 0.0000,
+		}
+	}
+
+	item RationCard
+	{
+		DisplayName = RationCard,
+		DisplayCategory = Junk,
+		Type = Normal,
+		Weight = 0.01,
+		Icon = RationCard,
+		WorldStaticModel = RationCard,
+		Tags = FitsWallet,
+	}
+}

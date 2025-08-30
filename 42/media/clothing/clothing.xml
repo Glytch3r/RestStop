@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<outfitManager>
+	<m_FemaleOutfits>
+		<m_Name>BunkerStaff</m_Name>
+		<m_Guid>296af54e-91c3-4c56-b9fb-41047500a4fb</m_Guid>
+		<m_Top>false</m_Top>
+		<m_Pants>false</m_Pants>
+
+		<m_items>
+			<probability>0.3</probability>
+			<itemGUID>94dc4673-2c6f-47ba-8750-0749c5452eab</itemGUID> <!-- Base.BellyButton_RingSilver -->
+		</m_items>
+
+		<m_items>
+			<itemGUID>6ded33a8-7e75-4755-8afb-28b3dbf25e0c</itemGUID> <!-- Base.Bra_Straps_FrillyBlack -->
+		</m_items>
+		<m_items>
+			<probability>0.7</probability>
+			<itemGUID>9c36a162-1348-46ad-81bd-70bf3ed7a93e</itemGUID> <!-- Base.Gloves_LongWomenGloves -->
+		</m_items>
+
+		<m_items>
+			<probability>0.3</probability>  <!-- Base.HolsterAnkle -->
+			<itemGUID>910277bd-1de8-4ce7-9f0a-7920fed87535</itemGUID>
+			<subItems>
+				<itemGUID>d1557446-883e-4233-a27c-ebd148f7a409</itemGUID>
+			</subItems>
+		</m_items>
+
+		<m_items>
+			<itemGUID>b87c05cc-9a93-4572-99f8-005e350ee723</itemGUID> <!-- Base.Shoes_Fancy -->
+		</m_items>
+		<m_items>
+			<itemGUID>00ae3ec3-4b6b-484c-9edd-501339307b45</itemGUID> <!-- Base.StockingsBlack -->
+		</m_items>
+		<m_items>
+			<itemGUID>eacdff18-efb3-4eaf-b71d-f2f6d98bff65</itemGUID> <!-- Base.FrillyUnderpants_Black -->
+		</m_items>
+		<!-- Makeup -->
+		<m_items>
+			<itemGUID>93dae095-1c92-4068-8f81-f75f62e153d9</itemGUID> <!-- Base.Makeup_LipsBlack -->
+		</m_items>
+		<m_items>
+			<itemGUID>38954977-5d34-44d2-97bf-d0018bda7997</itemGUID> <!-- Base.Makeup_EyesShadowBlue -->
+		</m_items>
+	</m_FemaleOutfits>
+</outfitManager>
+

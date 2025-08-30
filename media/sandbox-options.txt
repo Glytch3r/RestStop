@@ -1,0 +1,72 @@
+VERSION = 1,
+
+option BunkerStaff.immortal
+{
+	type = boolean, default = true,
+	page = BunkerStaff, translation = BunkerStaff_immortal,
+}
+
+
+option BunkerStaff.changeSkin
+{
+	type = boolean, default = true,
+	page = BunkerStaff, translation = BunkerStaff_changeSkin,
+}
+option BunkerStaff.weightLimit  {
+	type = double,	 min = 0.00,  max = 300,  default = 150,
+	page = BunkerStaff, translation = BunkerStaff_weightLimit,
+}
+
+option BunkerStaff.addWeight  {
+	type = double,	 min = 0.00,  max = 10,  default = 3,
+	page = BunkerStaff, translation = BunkerStaff_addWeight,
+}
+
+option BunkerStaff.drunkAmt  {
+	type = double,	 min = 0.00,  max = 200,  default = 100,
+	page = BunkerStaff, translation = BunkerStaff_drunkAmt,
+}
+
+option BunkerStaff.Coord  {
+	type = string, default = 9948;12631;-4, 
+	page = BunkerStaff, translation = BunkerStaff_Coord,
+}
+option BunkerStaff.HurtStatements  {
+	type = string, default =  HEY!;That hurts!;Careful!;Ouch!;Oh Dear.;WTF!;STOP IT!;NO!;Ooof!;Wha!,
+	page = BunkerStaff, translation = BunkerStaff_HurtStatements,
+}
+
+option BunkerStaff.InteractStatements  {
+	type = string, default =  Sup?;How may I help you today?;Hey Sexy.;Good Day.;Hows it going?;How are you?;Need anything?,
+	page = BunkerStaff, translation = BunkerStaff_InteractStatements,
+}
+
+option BunkerStaff.RandomStatements  {
+	type = string, default = Im Bored.;Another day in the bunker.;Feeling Hungry.;I wanna dance.;I miss home.;Whats for dinner?,
+	page = BunkerStaff, translation = BunkerStaff_RandomStatements,
+}
+
+option BunkerStaff.ActionChangeDelay  {
+	type = integer, min = 1, max = 999999, default = 120,
+	page = BunkerStaff, translation = BunkerStaff_ActionChangeDelay,
+}
+
+
+option BunkerStaff.TagString
+{
+	type = string, default = Lola Lollypop,
+	page = BunkerStaff, translation = BunkerStaff_TagString,
+}
+
+option BunkerStaff.ActiveTransition
+{
+	type = boolean, default = true,
+	page = BunkerStaff, translation = BunkerStaff_ActiveTransition,
+}
+
+
+option BunkerStaff.AddMapSymbol
+{
+	type = boolean, default = true,
+	page = BunkerStaff, translation = BunkerStaff_AddMapSymbol,
+}

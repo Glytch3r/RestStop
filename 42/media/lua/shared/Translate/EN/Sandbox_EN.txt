@@ -1,0 +1,45 @@
+Sandbox_EN = {
+
+	Sandbox_BunkerStaff = "BunkerStaff",
+
+	Sandbox_BunkerStaff_immortal = "Immortal NPC",
+	Sandbox_BunkerStaff_immortal_tooltip = "NPC cannot die.",
+
+	Sandbox_BunkerStaff_changeSkin = "Change NPC Skin",
+
+	Sandbox_BunkerStaff_weightLimit = "NPC Weight Limit",
+	Sandbox_BunkerStaff_weightLimit_tooltip = "Maximum NPC weight value.",
+
+	Sandbox_BunkerStaff_addWeight = "NPC Weight Gain",
+	Sandbox_BunkerStaff_addWeight_tooltip = "Amount of weight added per trigger.",
+
+	Sandbox_BunkerStaff_drunkAmt = "NPC Drunk Amount",
+	Sandbox_BunkerStaff_drunkAmt_tooltip = "Maximum level of drunkenness.",
+
+	Sandbox_BunkerStaff_Coord = "NPC Spawn Coordinates",
+	Sandbox_BunkerStaff_Coord_tooltip = "Format: X;Y;Z",
+
+	Sandbox_BunkerStaff_HurtStatements = "NPC Hurt Statements",
+	Sandbox_BunkerStaff_HurtStatements_tooltip = "Random phrases when NPC is hurt.",
+
+	Sandbox_BunkerStaff_InteractStatements = "NPC Interact Statements",
+	Sandbox_BunkerStaff_InteractStatements_tooltip = "Random phrases when interacting.",
+
+	Sandbox_BunkerStaff_RandomStatements = "NPC Random Statements",
+	Sandbox_BunkerStaff_RandomStatements_tooltip = "Random idle phrases spoken by NPC.",
+
+	Sandbox_BunkerStaff_ActionChangeDelay = "Action Change Delay",
+
+	Sandbox_BunkerStaff_TagString = "NPC Tag",
+	Sandbox_BunkerStaff_TagString_tooltip = "Text shown above NPC.",
+
+	Sandbox_BunkerStaff_ActiveTransition = "NPC Action Active Transition",
+	Sandbox_BunkerStaff_ActiveTransition_tooltip = "Turn off for permanent loop action.",
+
+	Sandbox_BunkerStaff_AddMapSymbol = "Add Map Symbol",
+	Sandbox_BunkerStaff_AddMapSymbol_tooltip = "NPC adds a symbol to the map.",
+
+	Sandbox_BunkerStaff_VisibleRadius = "NPC Tag Visible Radius",
+	Sandbox_BunkerStaff_UsePersonalColor = "NPC Tag Use Personal Color",
+
+}
