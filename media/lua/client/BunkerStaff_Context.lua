@@ -170,6 +170,35 @@ function BunkerStaff.Context(player, context, worldobjects)
 			inv:AddItems(fType)
 		end)
 
+
+		local optClick2 = dbgOpts:addOptionOnTop("Items Check", worldobjects, function()	
+			local fullTypes = {
+				"Base.BellyButton_RingSilver",
+				"Base.Bra_Straps_FrillyBlack",
+				"Base.Gloves_LongWomenGloves",
+				"Base.HolsterAnkle",
+				"Base.Shoes_Fancy",
+				"Base.StockingsBlack",
+				"Base.FrillyUnderpants_Black",
+				"Base.Makeup_LipsBlack",
+				"Base.Makeup_EyesShadowBlue",
+				"Base.RationCard",
+			}
+
+			for _, fType in ipairs(fullTypes) do
+				local item = ScriptManager.instance:FindItem(fType)
+				if item then
+					local name = item:getDisplayName()
+					print(fType .. " -> " .. name)
+				else
+					print(fType .. " -> [NOT FOUND]")
+				end
+			end
+		end)
+
+
+
+
 	end
 end
 Events.OnFillWorldObjectContextMenu.Remove(BunkerStaff.Context)
