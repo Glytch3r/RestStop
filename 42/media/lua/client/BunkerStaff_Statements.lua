@@ -39,19 +39,3 @@ function BunkerStaff.sayMsg(zed, mode, msg)
     end)
 end
 -----------------------            ---------------------------
-function BunkerStaff.pause(seconds, callback)
-    local start = getTimestampMs()
-    local duration = seconds * 1000
-
-    local function tick()
-        local now = getTimestampMs()
-        if now - start >= duration then
-            Events.OnTick.Remove(tick)
-            if callback then callback() end
-        end
-    end
-
-    Events.OnTick.Add(tick)
-end
------------------------               ---------------------------
----------------   hit*       ---------------------------

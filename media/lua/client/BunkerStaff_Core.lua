@@ -82,7 +82,20 @@ Events.OnZombieUpdate.Remove(BunkerStaff.coreFunc)
 Events.OnZombieUpdate.Add(BunkerStaff.coreFunc)
 
 
+function BunkerStaff.pause(seconds, callback)
+    local start = getTimestampMs()
+    local duration = seconds * 1000
 
+    local function tick()
+        local now = getTimestampMs()
+        if now - start >= duration then
+            Events.OnTick.Remove(tick)
+            if callback then callback() end
+        end
+    end
+
+    Events.OnTick.Add(tick)
+end
 
 function BunkerStaff.syncNPC(zed)
 	if not BunkerStaff.zed then

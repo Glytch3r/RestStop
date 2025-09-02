@@ -59,27 +59,6 @@ function BunkerStaff.doTrade()
 
     return true
 end
---[[ 
-
- BunkerStaff.doTrade()
-    local removed = 0
-    for j = inv:getItems():size()-1, 0, -1 do
-        local item = inv:getItems():get(j)
-        if item and item:getFullType() == "Base.RationCard" then
-            inv:Remove(item)
-            removed = removed + 1
-            if removed == cost then
-                break
-            end
-        end
-    end ]]
-
-
-
-
-
-
-
 
 
 function BunkerStaff.isCanTrade(pl)

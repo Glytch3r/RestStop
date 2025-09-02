@@ -106,14 +106,23 @@ function BunkerStaff.doStats(pl)
     if not pl then return end
     local stats = pl:getStats()
     local drunkAmt = SandboxVars.BunkerStaff.drunkAmt or 100 
-    stats:setDrunkenness(math.min(200, stats:getDrunkenness() + drunkAmt))
-    BunkerStaff.pause(1, function() 
-        stats:setThirst(0.3)
-        stats:setHunger(0.05)
-        stats:setBoredom(0.0)
-        stats:setUnhappyness(0.0)
-        stats:setFatigue(0.0)
-    end)
+    if stats then
+        stats:setDrunkenness(math.min(200, stats:getDrunkenness() + drunkAmt))
+
+		BunkerStaff.pause(1, function()
+	        stats:setThirst(0.3)
+            stats:setHunger(0.05)
+            stats:setBoredom(0.0)
+            stats:setFatigue(0.0)
+            local bd = pl:getBodyDamage()
+            if bd then
+                bd:setUnhappynessLevel(0.0)
+            end
+		end)
+
+    end
+
+
 
 --[[ 
     local bd = pl:getBodyDamage()
