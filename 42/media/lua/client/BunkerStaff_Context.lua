@@ -148,6 +148,29 @@ function BunkerStaff.Context(player, context, worldobjects)
 		tip2.description = tostring(tipMsg)
 		optClick2.toolTip = tip2
 	end
+
+	if getCore():getDebug() then 	
+		local menu2 = context:addOptionOnTop("NPC:")
+		local dbgOpts = ISContextMenu:getNew(context)
+		context:addSubMenu(menu2, dbgOpts)
+		menu2.iconTexture = getTexture("media/ui/NPC_Blue.png")
+			
+		local optClick2 = dbgOpts:addOptionOnTop("TP Near Bunker", worldobjects, function()
+			BunkerStaff.tp2()
+		end)
+		local optClick2 = dbgOpts:addOptionOnTop("Z -4", worldobjects, function()
+			pl:setZ(-4)
+		end)
+		local optClick2 = dbgOpts:addOptionOnTop("Z 0", worldobjects, function()
+			pl:setZ(0)
+		end)
+		local optClick2 = dbgOpts:addOptionOnTop("+RationCards x50", worldobjects, function()
+			local inv = pl:getInventory()
+			local fType = "Base.RationCard"
+			inv:AddItems(fType)
+		end)
+
+	end
 end
 Events.OnFillWorldObjectContextMenu.Remove(BunkerStaff.Context)
 Events.OnFillWorldObjectContextMenu.Add(BunkerStaff.Context)
